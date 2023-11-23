@@ -8,8 +8,8 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    bat 'mvn clean package'
-                    bat ''' mvn clean verify sonar:sonar -Dsonar.projectKey=student-management-system -Dsonar.projectName=student-management-system -Dsonar.host.url=http://localhost:9000 '''
+                    sh 'mvn clean package'
+                    sh ''' mvn clean verify sonar:sonar -Dsonar.projectKey=student-management-system -Dsonar.projectName=student-management-system -Dsonar.host.url=http://localhost:9000 '''
                     echo 'SonarQube Analysis Completed'
                 }
             }
