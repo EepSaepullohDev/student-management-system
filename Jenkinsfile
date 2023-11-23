@@ -1,12 +1,22 @@
 pipeline {
     agent any
+    tools {
+        maven 'jenkins-maven'
+    }
 
     stages {
+        stage('Git Checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/EepSaepullohDev/student-management-system']])
+                bat 'mvn clean install'
+                echo 'Git Checkout Completed'
+            }
+        }
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'mvn clean install'
-                    sh 'mvn clean package verify sonar:sonar'
+                    bat 'mvn clean package'
+                    bat ''' mvn clean verify sonar:sonar -Dsonar.projectKey=student-management-system -Dsonar.projectName=student-management-system -Dsonar.host.url=http://localhost:9000 '''
                     echo 'SonarQube Analysis Completed'
                 }
             }
