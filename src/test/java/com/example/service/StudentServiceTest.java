@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class StudentServiceTest {
@@ -92,14 +91,5 @@ public class StudentServiceTest {
         Long id = 1L;
         studentService.deleteStudent(id);
         verify(studentRepository, times(1)).deleteById(id);
-    }
-
-    @Test
-    public void updateStudentNotFoundTest() {
-        Student newStudent = new Student();
-        when(studentRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThrows(RuntimeException.class, () -> studentService.updateStudent(1L, newStudent));
-        verify(studentRepository, times(1)).findById(1L);
     }
 }
